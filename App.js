@@ -19,9 +19,15 @@ export default function App() {
   const [working, setWorking] = useState(true);
   const [text, setText] = useState("");
   const [toDos, setToDos] = useState({});
+  state = {
+    isLoading : true
+  };
+  componentDidMount = async() => {
+    setTimeout(() => {this.setState({isLoading: false})}, 3000);
+  }
   useEffect(() => {
     loadToDos();
-  }, []);
+  }, [working]);
   const travel = () => setWorking(false);
   const work = () => setWorking(true);
   const onChangeText = (payload) => setText(payload);
@@ -96,15 +102,16 @@ export default function App() {
       />
       <ScrollView>
         {Object.keys(toDos).map((key) =>
-          toDos[key].working === working ? (
-            <View style={styles.toDo} key={key}>
-              <Text style={styles.toDoText}>{toDos[key].text}</Text>
-              <TouchableOpacity onPress={() => deleteToDo(key)}>
-                <Fontisto name="trash" size={18} color={theme.gray} />
-              </TouchableOpacity>
-            </View>
-          ) : null
-        )}
+            toDos[key].working === working ? (
+              <View style={styles.toDo} key={key}>
+                  <Text style={styles.toDoText}>{toDos[key].text}</Text>
+                <TouchableOpacity onPress={() => deleteToDo(key)}>
+                  <Fontisto name="trash" size={18} color={theme.gray} />
+                </TouchableOpacity>
+              </View>
+            ) : null
+          )}
+        
       </ScrollView>
     </View>
   );
@@ -147,5 +154,9 @@ const styles = StyleSheet.create({
     color: "white",
     fontSize: 16,
     fontWeight: "600",
+  },
+  completed: {
+    color: theme.grey,
+    textDecorationLine: 'line-through',
   },
 });
